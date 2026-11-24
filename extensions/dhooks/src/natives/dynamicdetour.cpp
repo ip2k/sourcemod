@@ -74,6 +74,8 @@ void init(std::vector<sp_nativeinfo_t>& natives) {
 	sp_nativeinfo_t list[] = {
 		{"DHookCreateDetour",                  DynamicDetour_DynamicDetour},
 		{"DynamicDetour.DynamicDetour",        DynamicDetour_DynamicDetour},
+		{"DHookEnableDetour",                  DynamicDetour_Enable},
+		{"DHookDisableDetour",                 DynamicDetour_Disable},
 		/* DynamicDetour.FromConf is implemented in dhooksetup.cpp */
 		{"DynamicDetour.Enable",               DynamicDetour_Enable},
 		{"DynamicDetour.Disable",              DynamicDetour_Disable},
