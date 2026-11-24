@@ -257,7 +257,7 @@ void JIT_CallMemberFunction(AsmJit& jit, bool save_general_register[MAX_GENERAL_
 	jit.pop(rbp);
 }
 
-void JIT_MakeReturn(sp::CallingConvention, AsmJit& jit, ReturnVariable& ret) {
+void JIT_MakeReturn(sp::CallingConvention, size_t, AsmJit& jit, ReturnVariable& ret) {
 	jit.push(rbp); // Re-align stack
 	jit.sub(rsp, 0x10); // Make space to save data
 	jit.mov(rbp, rsp);
