@@ -128,6 +128,7 @@ void Capsule::PrePostHookLoop(std::uint8_t* saved_register, bool post) const {
             //printf("this_ptr 0x%lX\n", (uintptr_t)this_ptr);
         }
 
+        bool recall = false;
         // Make deep-copy to allow deletion of hooks under callbacks
         auto hooks = (post) ? _post_hooks : _pre_hooks;
         for (const auto& it : hooks) {
@@ -175,12 +176,16 @@ void Capsule::PrePostHookLoop(std::uint8_t* saved_register, bool post) const {
                 if (this_action > final_action) {
                     final_action = this_action;
                 }
-                // Params change, perform recall
                 if (result == (cell_t)sp::MRES_ChangedHandled || result == (cell_t)sp::MRES_ChangedOverride) {
-                    void* recall_func = KHook::DoRecall(final_action, return_ptr, return_size, init_op, delete_op);
-                    (*_recall_function)(recall_func, saved_register);
+                    recall = true;
                 }
             }
+        }
+
+        // Params changed, perform recall. KHook allows only one per hook
+        if (recall) {
+            void* recall_func = KHook::DoRecall(final_action, return_ptr, return_size, init_op, delete_op);
+            (*_recall_function)(recall_func, saved_register);
         }
 	}
 	KHook::SaveReturnValue(final_action, return_ptr, return_size, init_op, delete_op, false);
