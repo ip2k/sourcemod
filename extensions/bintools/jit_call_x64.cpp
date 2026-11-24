@@ -705,6 +705,9 @@ inline int ClassifyObject(const PassInfo *info, ObjectClass *classes)
 					classes[i] = ClassifyType(fields[j++]);
 					break;
 				} else if (j + 1 >= numFields) {
+					// A lone last field, like the third float of a Vector, still needs a class.
+					if (k == 0)
+						classes[i] = ClassifyType(fields[j]);
 					break;
 				}
 
